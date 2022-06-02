@@ -2,6 +2,12 @@ version: '3.4'
 
 services:
 
+  aspnetrunbasics:
+    image: ${DOCKER_REGISTRY-}aspnetrunbasics
+    build:
+      context: .
+      dockerfile: src/WebApp/AspnetRunBasics/Dockerfile
+
   ocelot.api.gateway:
     image: ${DOCKER_REGISTRY-}ocelot.api.gateway
     build:
@@ -37,6 +43,3 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-
-
-

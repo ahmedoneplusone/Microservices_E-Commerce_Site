@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Ordering.API.Extentions;
+using Ordering.API.RabbitMQ;
 using Ordering.Application.Handlers;
 using Ordering.Core.Repositories;
 using Ordering.Core.Repositories.Base;
@@ -47,14 +49,16 @@ namespace Ordering.API
 
             services.AddDbContext<OrderContext>(c =>
             c.UseSqlServer(Configuration.GetConnectionString("OrderConn")), ServiceLifetime.Singleton);
+            
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IOrderRepo), typeof(OrderRepo));
+            services.AddTransient<IOrderRepo, OrderRepo>();
 
             services.AddAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(CheckoutOrderHandler).GetTypeInfo().Assembly);
 
-            services.AddTransient<IOrderRepo, OrderRepo>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IOrderRepo), typeof(OrderRepo));
+
 
             services.AddSingleton<IRabbitMQConnection>(sp =>
             {
@@ -76,7 +80,7 @@ namespace Ordering.API
                 return new RabbitMQConnection(factory);
             });
 
-            services.AddSingleton<EventBusRabbitMQProducer>();
+            services.AddSingleton<EventBusRabbitMQConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +101,8 @@ namespace Ordering.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseRabbitListener();
         }
     }
 }

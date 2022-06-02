@@ -13,6 +13,15 @@ services:
       context: .
       dockerfile: src/Basket/Basket.API/Dockerfile
 
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}ordering.api
+    build:
+      context: .
+      dockerfile: src/Ordering/Ordering.API/Dockerfile
+
+  ordering.db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+
   catalog.db:
     image: mongo
 
@@ -21,3 +30,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+
+
+

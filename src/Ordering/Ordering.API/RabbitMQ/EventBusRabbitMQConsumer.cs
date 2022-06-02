@@ -5,6 +5,7 @@ using MediatR;
 using Newtonsoft.Json;
 using Ordering.Application.Commands;
 using Ordering.Core.Repositories;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using src.Common.EventBusRabbitMQ;
 using System;
@@ -36,7 +37,7 @@ namespace Ordering.API.RabbitMQ
             channel.QueueDeclare(queue: EventBusConstants.BasketCheckoutQueue, durable: false, exclusive: false, autoDelete: false, arguments: null);
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += ReceivedEvent;
-            channel.BasicConsume(queue: EventBusConstants.BasketCheckoutQueue, autoAck: true, consumer: consumer,noLocal:false,exclusive:false,arguments:null,consumerTag:"");
+            channel.BasicConsume(queue: EventBusConstants.BasketCheckoutQueue, autoAck: true, consumer: consumer);
 
         }
 
@@ -48,8 +49,13 @@ namespace Ordering.API.RabbitMQ
                 var basketCheckoutEvent = JsonConvert.DeserializeObject<BasketCheckoutEvent>(message);
 
                 var command = _mapper.Map<CheckoutOrderCommand>(basketCheckoutEvent);
-
+                var result = await _mediator.Send(command);
             }
+        }
+
+        public void Disconnect()
+        {
+            _connection.Dispose();
         }
     }
 }

@@ -2,21 +2,21 @@ version: '3.4'
 
 services:
   catalog.api:
-    image: ${DOCKER_REGISTRY-}catalogapi
+    image: ${DOCKER_REGISTRY-}catalog.api
     build:
       context: .
-      dockerfile: src/Catalog/CatalogAPI/Dockerfile
+      dockerfile: src/Catalog/Catalog.API/Dockerfile
 
   basket.api:
-    image: ${DOCKER_REGISTRY-}basketapi
+    image: ${DOCKER_REGISTRY-}basket.api
     build:
       context: .
       dockerfile: src/Basket/Basket.API/Dockerfile
 
-  catalogdb:
+  catalog.db:
     image: mongo
 
-  basketdb:
+  basket.db:
     image: redis
 
   rabbitmq:

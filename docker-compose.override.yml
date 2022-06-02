@@ -1,16 +1,16 @@
 version: '3.4'
 
 services:
-  catalogdb:
-    container_name: catalogdb
+  catalog.db:
+    container_name: catalog.db
     restart: always
     volumes:
       - ${WEBAPP_STORAGE_HOME}/site:/data/db
     ports:
       - "27017:27017"
 
-  basketdb:
-    container_name: basketdb
+  basket.db:
+    container_name: basket.db
     restart: always
     ports:
       - "6379:6379"
@@ -23,12 +23,12 @@ services:
       - "15672:15672"
 
   catalog.api:
-    container_name: catalogapi
+    container_name: catalog.api
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development
-      - "CatalogDatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
+      - "CatalogDatabaseSettings:ConnectionString=mongodb://catalog.db:27017"
     depends_on: 
-      - catalogdb
+      - catalog.db
     volumes:
             - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
             - ${HOME}/.aspnet/https:/root/.aspnet/https/
@@ -36,13 +36,13 @@ services:
       - "8000:80"
 
   basket.api:
-    container_name: basketapi
+    container_name: basket.api
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:Redis=basketdb:6379"
+      - "ConnectionStrings:Redis=basket.db:6379"
       - "EventBus:Hostname=rabbitmq"
     depends_on: 
-      - basketdb
+      - basket.db
       - rabbitmq
     volumes:
             - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets

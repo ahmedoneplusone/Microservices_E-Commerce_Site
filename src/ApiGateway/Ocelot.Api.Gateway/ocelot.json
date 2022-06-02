@@ -1,5 +1,5 @@
 {
-  "ReRoutes": [
+  "Routes": [
     // catalog api
     {
       "DownstreamPathTemplate": "/api/v1/Catalog",

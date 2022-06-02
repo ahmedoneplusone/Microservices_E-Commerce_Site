@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+
+  ocelot.api.gateway:
+    image: ${DOCKER_REGISTRY-}ocelot.api.gateway
+    build:
+      context: .
+      dockerfile: src/ApiGateway/Ocelot.Api.Gateway/Dockerfile
+
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalog.api
     build:

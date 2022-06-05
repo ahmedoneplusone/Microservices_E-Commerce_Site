@@ -80,7 +80,7 @@
     },
     // ordering api
     {
-      "DownstreamPathTemplate": "/api/v1/Order",
+      "DownstreamPathTemplate": "/api/v1/Order/GetOrderByUserName/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -88,7 +88,19 @@
           "Port": "80"
         }
       ],
-      "UpstreamPathTemplate": "/Order",
+      "UpstreamPathTemplate": "/Order/GetOrderByUserName/{userName}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/GetOrderByCountry/{country}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ordering.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Order/GetOrderByCountry/{country}",
       "UpstreamHttpMethod": [ "GET" ]
     }
   ]

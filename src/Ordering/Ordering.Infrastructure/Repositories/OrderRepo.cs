@@ -17,6 +17,14 @@ namespace Ordering.Infrastructure.Repositories
         {
         }
 
+        public async Task<IEnumerable<Order>> GetOrdersByCountry(string country)
+        {
+            var orderList = await _db.Orders
+                .Where(o => o.Country == country)
+                .ToListAsync();
+            return orderList;
+        }
+
         public async Task<IEnumerable<Order>> GetOrdersByUserName(string userName)
         {
             var orderList = await _db.Orders

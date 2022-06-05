@@ -11,5 +11,6 @@ namespace Ordering.Core.Repositories
     public interface IOrderRepo : IRepository<Order>
     {
         Task<IEnumerable<Order>> GetOrdersByUserName(string userName);
+        Task<IEnumerable<Order>> GetOrdersByCountry(string country);
     }
 }

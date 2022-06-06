@@ -22,7 +22,7 @@ namespace Ordering.API.Controllers
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
-        [Route("[action]")]
+        [Route("[action]/{userName}")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<OrderResponses>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<OrderResponses>>> GetOrderByUserName(string userName)
@@ -32,7 +32,7 @@ namespace Ordering.API.Controllers
             return Ok(orders);
         }
 
-        [Route("[action]")]
+        [Route("[action]/{country}")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<OrderResponses>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<OrderResponses>>> GetOrderByCountry(string country)
